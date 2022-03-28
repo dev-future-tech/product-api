@@ -1,5 +1,12 @@
 package org.flower.productapi;
 
+import java.util.List;
+import java.util.Optional;
+import javax.annotation.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
+
 @Component
 public class ProductService {
 
@@ -12,18 +19,14 @@ public class ProductService {
         return saved.getProductId();
     }
 
-    Product getProductById(Long productId) throws ProductNotFoundException {
+    Optional<Product> getProductById(Long productId) throws ProductNotFoundException {
         return this.productRepository.findById(productId).map(dao -> {
-            Product found = new Product();
-            found.setProductId(dao.getProductId());
-            found.setName(dao.getName());
-            found.setSku(dao.getSku());
-            found.setDescription(dao.getDescription());
-            return found;
-        }).orElseThrow(new ProductNotFoundException("Product not found"));
+            Product found = toDTO(dao);
+            return Optional.of(found);
+        }).orElseThrow(() -> new ProductNotFoundException("Error getting product by id"));
     }
 
-    public int getTotalProductCount() {
+    long getTotalProductCount() {
         return this.productRepository.count();
     }
 

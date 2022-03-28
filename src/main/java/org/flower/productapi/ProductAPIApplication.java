@@ -18,7 +18,7 @@ public class ProductAPIApplication {
     public ShallowEtagHeaderFilter shallowEtagHeaderFilter() {
         return new ShallowEtagHeaderFilter();
     }
-/*
+
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
@@ -33,5 +33,5 @@ public class ProductAPIApplication {
             }
         };
     }
-*/
+
 }
