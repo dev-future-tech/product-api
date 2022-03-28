@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeset:
+      id: 1
+      author: aikeda
+      changes:
+        - createTable:
+            tableName: products
+            columns:
+              - column:
+                  name: product_id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: product_name
+                  type: varchar(120)
+              - column:
+                  name: sku
+                  type: varchar(15)
+              - column:
+                  name: description
+                  type: text
+              - column:
+                  name: last_updated
+                  type: timestamp
+                  defaultValueComputed: current_timestamp
