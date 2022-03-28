@@ -1,0 +1,4 @@
+= Product API
+Anthony Ikeda <anthony.ikeda@gmail.com>
+Version 0.0.1
+
