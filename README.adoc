@@ -10,6 +10,37 @@ Added TestContainers for testing
 == To do
 Add liquibase to test harness ✅
 Add liquibase deployment step
+Make Liquibase deployment targetable
 Create unit tests against TC database ✅
 Setup AWS deployment strategy (terraform? cloud formation?)
+
+Basic Environment - Non Containerized
+
+* Security:
+    ** Service accounts
+    ** ?
+* EC2 instances (configure scale)
+* RDS database
+* Load Balancer / API Gateway
+* Networking
+    ** VPC (configure, default VPC used if not set)
+    ** Subnet
+    ** HA not configured by default (optional)
+* Monitoring (cloud watch or custom. perhaps set up basic monitoring tools and connect to that?)
+
+
+Basic Environment - Containerized Minimal
+
+* Security:
+    ** Service accounts
+    ** ?
+* ECS instances
+* Container registry
+* RDS database
+* Load Balancer / API Gateway
+* Networking
+    ** VPC (configure, default VPC used if not set)
+    ** Subnet
+    ** HA not configured by default (optional)
+* Monitoring (cloud watch or custom. perhaps set up basic monitoring tools and connect to that?)
 
