@@ -81,8 +81,6 @@
                 <configuration>
                     <propertyFile>liquibase.properties</propertyFile>
                     <changeLogFile>src/main/resources/db/database-changelog.yml</changeLogFile>
-                    <url>jdbc:tc:postgresql:9.6.8:///product_db</url>
-                    <driver>org.testcontainers.jdbc.ContainerDatabaseDriver</driver>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -94,6 +92,11 @@
                         <groupId>org.testcontainers</groupId>
                         <artifactId>postgresql</artifactId>
                         <version>1.16.3</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>42.2.23</version>
                     </dependency>
                 </dependencies>
             </plugin>

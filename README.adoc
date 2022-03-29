@@ -10,6 +10,6 @@ Added TestContainers for testing
 == To do
 Add liquibase to test harness ✅
 Add liquibase deployment step
-Create unit tests against TC database
+Create unit tests against TC database ✅
 Setup AWS deployment strategy (terraform? cloud formation?)
 
