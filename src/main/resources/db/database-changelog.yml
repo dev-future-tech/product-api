@@ -1,4 +1,8 @@
 databaseChangeLog:
+  - property:
+      dbms: postgresql
+      name: now
+      value: current_timestamp
   - changeSet:
       id: 1
       author: aikeda
@@ -9,28 +13,111 @@ databaseChangeLog:
               - column:
                   name: product_id
                   type: bigint
+                  autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
                   name: product_name
-                  type: varchar(120)
+                  type: varchar(150)
+                  constraints:
+                    nullable: false
               - column:
                   name: sku
-                  type: varchar(15)
+                  type: varchar(40)
+                  constraints:
+                    nullable: false
               - column:
                   name: description
-                  type: text
+                  type: varchar(200)
               - column:
-                  name: last_updated
-                  type: timestamp
-                  defaultValueComputed: current_timestamp
-        -   addAutoIncrement:
-                columnDataType: bigint
-                columnName: product_id
-                defaultOnNull: false
-                generationType: ALWAYS
-                incrementBy: 1
-                schemaName: public
-                startWith: 100
-                tableName: products
+                  name: created_date
+                  type: datetime
+                  defaultValueDate: ${now}
+              - column:
+                  name: updated_date
+                  type: datetime
+                  defaultValueDate: ${now}
+        - createTable:
+            tableName: product_prices
+            columns:
+              - column:
+                  name: price_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: product_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_product_price_id
+                    references: products(product_id)
+              - column:
+                  name: price
+                  type: double(4,2)
+                  defaultValue: 0
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: datetime
+                  defaultValueComputed: ${now}
+              - column:
+                  name: updated_date
+                  type: datetime
+                  defaultValueComputed: ${now}
+        - createTable:
+            tableName: product_labels
+            columns:
+              - column:
+                  name: product_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: label
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+        - createIndex:
+            indexName: idx_label_product_lookup
+            tableName: product_labels
+            columns:
+              - column:
+                  descending: true
+                  name: product_id
+  - changeSet:
+      id: 2
+      author: aikeda
+      changes:
+        - sqlFile:
+            dbms: postgresql
+            splitStatements: true
+            path: db/insert_products.sql
+            stripComments: true
+  - changeSet:
+      id: 3
+      author: aikeda
+      changes:
+        - sql:
+            sql: |-
+              CREATE OR REPLACE FUNCTION change_update_time() RETURNS trigger
+                LANGUAGE plpgsql
+                AS '
+                BEGIN
+                  NEW.updated_date := CURRENT_TIMESTAMP;
+                  RETURN NEW;
+                END;
+              ';
+  - changeSet:
+      id: 4
+      author: aikeda
+      changes:
+        - sql:
+            dbms: postgresql
+            sql: |-
+              CREATE TRIGGER add_current_date_to_my_table
+              BEFORE UPDATE ON products FOR EACH ROW EXECUTE PROCEDURE change_update_time();

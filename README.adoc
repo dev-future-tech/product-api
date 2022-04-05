@@ -13,6 +13,7 @@ Add liquibase deployment step
 Make Liquibase deployment targetable
 Create unit tests against TC database ✅
 Setup AWS deployment strategy (terraform? cloud formation?)
+Test minimal viable configuration for the service
 
 Basic Environment - Non Containerized
 
@@ -44,3 +45,22 @@ Basic Environment - Containerized Minimal
     ** HA not configured by default (optional)
 * Monitoring (cloud watch or custom. perhaps set up basic monitoring tools and connect to that?)
 
+== Notes
+
+Looks the terraform github actions requires terraform cloud, so for this example we
+will default to CloudFormation
+
+=== CloudFormation Requirements
+
+* [ ] IAM Policy that allows the user to:
+** [ ] Create an RDS instance
+** [ ] Create a single EC2 instance
+* [ ] Ability to create an RDS instance (PostgreSQL)
+* [ ] Ability to spin up an EC2 instance with
+** [ ] Java 17
+** [ ] Env vars for the spring datasource
+        - `spring.datasource.url`
+        - `spring.datasource.username`
+        - `spring.datasource.password`
+        - `spring.liquibase.change-log=classpath:db/ database-changelog.yml`
+** [ ] Memory Requirements: `-Xmx32m -Xss256k`
