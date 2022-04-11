@@ -18,20 +18,20 @@ public class ProductAPIApplication {
     public ShallowEtagHeaderFilter shallowEtagHeaderFilter() {
         return new ShallowEtagHeaderFilter();
     }
-/*
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry
-                        .addMapping("/**")
-                        .allowedOrigins("http://localhost:4200")
-                        .allowedHeaders("*")
-                        .exposedHeaders("Location")
-                        .allowedMethods("*");
-            }
-        };
-    }
-*/
+
+//    @Bean
+//    public WebMvcConfigurer corsConfigurer() {
+//        return new WebMvcConfigurer() {
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry
+//                        .addMapping("/**")
+//                        .allowedOrigins("http://localhost:4200")
+//                        .allowedHeaders("*")
+//                        .exposedHeaders("Location")
+//                        .allowedMethods("*");
+//            }
+//        };
+//    }
+
 }
