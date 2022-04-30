@@ -134,8 +134,11 @@
                 <version>3.2.1</version>
                 <configuration>
                     <to>
-                        <image>anthonyikeda/shopping-cart</image>
+                        <image>anthonyikeda/product-api</image>
                     </to>
+                    <container>
+                        <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+                    </container>
                 </configuration>
             </plugin>
         </plugins>
