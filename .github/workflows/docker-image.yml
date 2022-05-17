@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        env: ['clean verify', 'jib:dockerBuild']
+        env: ['clean verify', 'clean verify -DskipTests=true jib:dockerBuild']
     steps:
       - uses: actions/checkout@v3
       - name: setup java
