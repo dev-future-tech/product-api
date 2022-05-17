@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        env: ['clean verify', 'clean verify -DskipTests=true jib:dockerBuild']
+        env: ['clean verify', 'clean verify -DskipTests=true jib:buildTar']
     steps:
       - uses: actions/checkout@v3
       - name: setup java
@@ -22,11 +22,22 @@ jobs:
           cache: maven
       - name: Execute
         run: ./mvnw ${{matrix.env}}
+      - name: Upload math result for job 2
+        uses: actions/upload-artifact@v3
+        with:
+          name: product-tar
+          path: target/jib-image.tar
 
 
   push:
     needs: image_matrix
     runs-on: ubuntu-latest
     steps:
+      - name: download tar
+        uses: actions/download-artifact@v3
+        with:
+          name: product-tar
+      - name: load to registry
+        run: docker load -i jib-image.tar
       - name: push to repo
         run: docker images
