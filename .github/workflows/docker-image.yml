@@ -20,5 +20,6 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
-      - name: ./mvnw ${{matrix.env}}
+      - name: Execute
+        run: ./mvnw ${{matrix.env}}
 
