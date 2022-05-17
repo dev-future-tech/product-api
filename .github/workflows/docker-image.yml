@@ -23,3 +23,10 @@ jobs:
       - name: Execute
         run: ./mvnw ${{matrix.env}}
 
+
+  push:
+    needs: image_matrix
+    runs-on: ubuntu-latest
+    steps:
+      - name: push to repo
+        run: docker images
