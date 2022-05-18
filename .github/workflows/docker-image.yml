@@ -20,16 +20,20 @@ jobs:
           cache: maven
       - id: build
         name: Execute build
-        run: ./mvnw clean verify jib:dockerBuild
+        run: ./mvnw clean verify
       - id: docker-login
         name: Login to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_SECRET }}
-      - id: list_images
-        name: list docker images
-        run: docker images
+      - id: release
+        name: Release to packages
+        run: |
+          ./mvnw release:prepare release:perform -B -s .maven_settings.xml 
+        env:
+          CI_DEPLOY_USERNAME: ${{ secrets.CI_DEPLOY_USERNAME }}
+          CI_DEPLOY_PASSWORD: ${{ secrets.CI_DEPLOY_PASSWORD }}
       - id: artifactId
         name: Get ArtifactId
         run: |
@@ -38,6 +42,9 @@ jobs:
         name: Get Version
         run: |
           echo "artifactVersion=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+      - id: build_image
+        name: Build Docker image - no tests
+        run: ./mvnw clean verify -DskipTests=true jib:dockerBuild
       - id: docker_push
         name: Push to DockerHub
         run: docker push anthonyikeda/${{env.artifactId}}:${{env.artifactVersion}}
@@ -46,10 +53,3 @@ jobs:
         run: |
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
-      - id: release
-        name: Release to packages
-        run: |
-          ./mvnw release:prepare release:perform -B -s .maven_settings.xml 
-        env:
-          CI_DEPLOY_USERNAME: ${{ secrets.CI_DEPLOY_USERNAME }}
-          CI_DEPLOY_PASSWORD: ${{ secrets.CI_DEPLOY_PASSWORD }}
