@@ -9,9 +9,6 @@ on:
 jobs:
   image_matrix:
     runs-on: ubuntu-latest
-    outputs:
-      artifactId: ${{steps.artifactId.outputs.artifactId}}
-      version: ${{steps.version.outputs.version}}
     steps:
       - uses: actions/checkout@v3
       - id: java-setup
@@ -24,55 +21,25 @@ jobs:
       - id: build
         name: Execute build
         run: ./mvnw clean verify jib:dockerBuild
-      - id: list_images
-        name: list docker images
-        run: docker images
-      - id: export_image
-        name: Export Docker image
-        run: |
-          docker save --output jib-image.tar anthonyikeda/$(./mvnw help:evaluate -Dexpression=project.artifactId -q -DforceStdout):$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
-      - id: artifactId
-        name: Get ArtifactId
-        run: echo "::set-output name=artifactId::$(./mvnw help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
-      - id: version
-        name: Get Version
-        run: echo "::set-output name=version::$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)"
-      - id: uploadArtifact
-        name: Upload Docker Tarball
-        uses: actions/upload-artifact@v3
-        with:
-          name: product-tar
-          path: ./jib-image.tar
-
-  push:
-    runs-on: ubuntu-latest
-    needs: image_matrix
-    steps:
-      - name: Login to DockerHub
+      - id: docker-login
+        name: Login to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_SECRET }}
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      # So now you can use Actions' own caching!
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-      - name: download tar
-        uses: actions/download-artifact@v3
-        with:
-          name: product-tar
-      - name: load to registry
-        run: docker load -i jib-image.tar
-      - name: list images
+      - id: list_images
+        name: list docker images
         run: docker images
+      - id: artifactId
+        name: Get ArtifactId
+        run: |
+          "artifactId=$(./mvnw help:evaluate -Dexpression=project.artifactId -q -DforceStdout)" >> $GITHUB_ENV
+      - id: version
+        name: Get Version
+        run: |
+          "artifactVersion=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
       - name: Push to DockerHub
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: anthonyikeda/${{needs.image_matrix.outputs.artifactId}}:${{needs.image_matrix.outputs.version}}
+          tags: anthonyikeda/${{env.artifactId}}:${{env.artifactVersion}}
