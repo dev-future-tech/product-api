@@ -41,7 +41,7 @@ jobs:
       - id: docker_push
         name: Push to DockerHub
         run: docker push anthonyikeda/${{env.artifactId}}:${{env.artifactVersion}}
-      - id git_config
+      - id: git_config
         name: Configure Git User
         run: |
           git config user.email "actions@github.com"
