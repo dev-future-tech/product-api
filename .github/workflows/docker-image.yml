@@ -24,6 +24,9 @@ jobs:
       - id: build
         name: Execute build
         run: ./mvnw clean verify jib:dockerBuild
+      - id: list_images
+        name: list docker images
+        run: docker images
       - id: export_image
         name: Export Docker image
         run: |
