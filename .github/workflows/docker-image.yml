@@ -39,7 +39,4 @@ jobs:
         run: |
           echo "artifactVersion=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
       - name: Push to DockerHub
-        uses: docker/build-push-action@v3
-        with:
-          push: true
-          tags: anthonyikeda/${{env.artifactId}}:${{env.artifactVersion}}
+        run: docker push anthonyikeda/${{env.artifactId}}:${{env.artifactVersion}}
