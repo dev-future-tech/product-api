@@ -33,11 +33,11 @@ jobs:
       - id: artifactId
         name: Get ArtifactId
         run: |
-          "artifactId=$(./mvnw help:evaluate -Dexpression=project.artifactId -q -DforceStdout)" >> $GITHUB_ENV
+          echo "artifactId=$(./mvnw help:evaluate -Dexpression=project.artifactId -q -DforceStdout)" >> $GITHUB_ENV
       - id: version
         name: Get Version
         run: |
-          "artifactVersion=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+          echo "artifactVersion=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
       - name: Push to DockerHub
         uses: docker/build-push-action@v3
         with:
