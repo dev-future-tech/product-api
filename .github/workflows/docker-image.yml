@@ -27,6 +27,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_SECRET }}
+      - id: git_config
+        name: Configure Git User
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
       - id: release
         name: Release to packages
         run: |
@@ -48,8 +53,3 @@ jobs:
       - id: docker_push
         name: Push to DockerHub
         run: docker push anthonyikeda/${{env.artifactId}}:${{env.artifactVersion}}
-      - id: git_config
-        name: Configure Git User
-        run: |
-          git config user.email "actions@github.com"
-          git config user.name "GitHub Actions"
