@@ -21,7 +21,7 @@
         <repository>
             <id>github</id>
             <name>GitHub anthonyikeda Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/anthonyikeda/product-api</url>
+            <url>https://maven.pkg.github.com/dev-future-tech/product-api</url>
         </repository>
     </distributionManagement>
 
