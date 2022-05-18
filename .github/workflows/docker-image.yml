@@ -12,33 +12,30 @@ jobs:
     outputs:
       artifactId: ${{ steps.artifactId.outputs.artifactId }}
       version: ${{ steps.version.outputs.version }}
-    strategy:
-      matrix:
-        env: ['clean verify', 'clean verify -DskipTests=true jib:buildTar']
     steps:
       - uses: actions/checkout@v3
-      - name: setup java
+      - id: java-setup
+        name: setup java
         uses: actions/setup-java@v2
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
-      - name: Execute
-        id: build
-        run: ./mvnw ${{matrix.env}}
-      - name: Get ArtifactId
-        id: artifactId
+      - id: build
+        name: Execute build
+        run: ./mvnw clean verify jib:buildTar
+      - id: artifactId
+        name: Get ArtifactId
         run: echo "::set-output artifactId=$(./mvnw help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
-      - name: Get Version
-        id: version
+      - id: version
+        name: Get Version
         run: echo "::set-output version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)"
-      - name: Upload math result for job 2
-        id: uploadArtifact
+      - id: uploadArtifact
+        name: Upload Docker Tarball
         uses: actions/upload-artifact@v3
         with:
           name: product-tar
           path: target/jib-image.tar
-
 
   push:
     needs: image_matrix
@@ -54,6 +51,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: anthonyikeda/${{ needs.image_matrix.outputs.artifactId }}:${{ needs.image_matrix.outputs.version }}:latest
+          tags: anthonyikeda/${{ needs.image_matrix.outputs.artifactId }}:${{ needs.image_matrix.outputs.version }}
           secrets: |
             GIT_AUTH_TOKEN=${{ secrets.DOCKER_HUB_SECRET }}
