@@ -28,7 +28,7 @@
 
     <scm>
         <connection>scm:git:${project.scm.url}</connection>
-        <url>scm:git:https://github.com/dev-future-tech/product-api.git</url>
+        <url>https://github.com/dev-future-tech/product-api.git</url>
         <tag>HEAD</tag>
     </scm>
 
