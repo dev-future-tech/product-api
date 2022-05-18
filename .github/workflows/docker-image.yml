@@ -47,6 +47,8 @@ jobs:
           name: product-tar
       - name: load to registry
         run: docker load -i jib-image.tar
+      - name: list images
+        run: docker images
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
