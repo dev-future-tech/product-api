@@ -23,7 +23,11 @@ jobs:
           cache: maven
       - id: build
         name: Execute build
-        run: ./mvnw clean verify jib:buildTar
+        run: ./mvnw clean verify jib:dockerBuild
+      - id: export_image
+        name: Export Docker image
+        run: |
+          docker save --output jib-image.tar anthonyikeda/$(./mvnw help:evaluate -Dexpression=project.artifactId -q -DforceStdout):$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
       - id: artifactId
         name: Get ArtifactId
         run: echo "::set-output name=artifactId::$(./mvnw help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
@@ -35,7 +39,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: product-tar
-          path: target/jib-image.tar
+          path: ./jib-image.tar
 
   push:
     runs-on: ubuntu-latest
