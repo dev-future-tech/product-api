@@ -38,5 +38,18 @@ jobs:
         name: Get Version
         run: |
           echo "artifactVersion=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
-      - name: Push to DockerHub
+      - id: docker_push
+        name: Push to DockerHub
         run: docker push anthonyikeda/${{env.artifactId}}:${{env.artifactVersion}}
+      - id git_config
+        name: Configure Git User
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+      - id: release
+        name: Release to packages
+        run: |
+          ./mvnw release:prepare release:perform -B -s .maven_settings.xml 
+        env:
+          CI_DEPLOY_USERNAME: ${{ secrets.CI_DEPLOY_USERNAME }}
+          CI_DEPLOY_PASSWORD: ${{ secrets.CI_DEPLOY_PASSWORD }}
