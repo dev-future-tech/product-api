@@ -1,22 +1,10 @@
 package org.flower.productapi;
 
-import com.rabbitmq.client.Channel;
-import org.junit.ClassRule;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.amqp.rabbit.annotation.EnableRabbit;
-import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
-import org.springframework.amqp.rabbit.connection.Connection;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.test.TestRabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.util.TestPropertyValues;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -24,17 +12,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.mock;
-import static org.mockito.BDDMockito.willReturn;
-import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @WebMvcTest(ProductRequestController.class)
@@ -73,6 +59,37 @@ public class ProductRequestControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"));
+    }
+
+    @Test
+    public void testGetMyRequests() throws Exception {
+        ProductRequest req1 = new ProductRequest();
+        req1.setRequestId(5657L);
+        req1.setName("Long Socks");
+        req1.setBrand("Rio 1987");
+        req1.setSize("L");
+
+        ProductRequest req2 = new ProductRequest();
+        req2.setRequestId(3453L);
+        req2.setName("Jolt Coffee Pods");
+        req2.setBrand("NesCoffee");
+        req2.setSize("500g");
+
+        ProductRequest req3 = new ProductRequest();
+        req3.setRequestId(9876L);
+        req3.setName("Pipilong Stockings");
+        req3.setBrand("Fictional haberdashery");
+        req3.setSize("Petite");
+
+        List<ProductRequest> results = new ArrayList<>(Arrays.asList(req1, req2, req3));
+
+        when(service.getProductRequests()).thenReturn(results);
+
+        this.mockMvc.perform(get("/product-request/v1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$", hasSize(3)));
     }
 
 }

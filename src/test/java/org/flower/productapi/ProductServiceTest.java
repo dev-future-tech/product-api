@@ -1,6 +1,5 @@
 package org.flower.productapi;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = RabbitMQTestConfiguration.class)
@@ -34,7 +37,7 @@ public class ProductServiceTest {
 
     @Test
     @Transactional
-    public void testGetProductById() {
+    public void testSaveProduct() {
         Product product = new Product();
         product.setName("New Product");
         product.setDescription("A brand new product");
@@ -43,5 +46,22 @@ public class ProductServiceTest {
         Long productId = productService.saveProduct(product);
 
         assertThat(productId).isNotNull();
+    }
+
+    @Test
+    public void testGetProductById() throws Exception {
+        Product product = new Product();
+        product.setName("New Product");
+        product.setDescription("A brand new product");
+        product.setSku("123412sf");
+
+        Long productId = productService.saveProduct(product);
+
+        assertThat(productId).isNotNull();
+
+        Optional<Product> found = this.productService.getProductById(productId);
+
+        assertThat(found).isNotEmpty();
+        assertThat(found.get().getProductId()).isEqualTo(productId);
     }
 }

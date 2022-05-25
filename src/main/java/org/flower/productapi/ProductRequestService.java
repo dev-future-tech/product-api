@@ -20,7 +20,10 @@ public class ProductRequestService {
     }
 
     List<ProductRequest> getProductRequests() {
-        return null;
+        return requestRepository.findAll()
+                .stream()
+                .map(this::convertDAO)
+                .toList();
     }
 
     Long saveProductRequest(ProductRequest productRequest) {
@@ -37,4 +40,14 @@ public class ProductRequestService {
 
         return saved.getRequestId();
     }
+
+    private ProductRequest convertDAO(ProductRequestDAO dao) {
+        ProductRequest request = new ProductRequest();
+        request.setRequestId(dao.getRequestId());
+        request.setName(dao.getProductName());
+        request.setBrand(dao.getProductBrand());
+        request.setSize(dao.getProductSize());
+        return request;
+    }
+
 }
