@@ -21,19 +21,23 @@ public class AMQPConfiguration {
 
     @Bean
     Queue queue() {
-        return new Queue(queueName, false);
+        return new Queue(queueName, true, false, true);
     }
 
     @Bean
     TopicExchange exchange() {
-        return new TopicExchange(topicExchangeName);
+        return new TopicExchange(topicExchangeName, true, true);
     }
 
     @Bean
     Binding binding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with("product.requests.#");
+        return BindingBuilder
+                .bind(queue)
+                .to(exchange)
+                .with("product.requests.#");
     }
 
+/*
     @Bean
     SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
                                              MessageListenerAdapter listenerAdapter) {
@@ -48,4 +52,5 @@ public class AMQPConfiguration {
     MessageListenerAdapter listenerAdapter(RequestReceiver receiver) {
         return new MessageListenerAdapter(receiver, "receiveMessage");
     }
+*/
 }

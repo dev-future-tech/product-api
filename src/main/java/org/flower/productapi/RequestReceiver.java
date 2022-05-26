@@ -13,4 +13,8 @@ public class RequestReceiver {
         System.out.println("Received <" + message + ">");
         latch.countDown();
     }
+
+    public CountDownLatch getLatch() {
+        return latch;
+    }
 }
