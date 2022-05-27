@@ -16,7 +16,7 @@ jobs:
         name: setup java
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
+          java-version: '18'
           distribution: 'zulu'
           cache: maven
       - id: build
@@ -28,6 +28,8 @@ jobs:
       - id: release-version
         name: Get release version
         run: ./mvnw release:prepare -DdryRun=true
+        env:
+          SPRING_PROFILES_ACTIVE: "test"
       - id: artifactId
         name: Get ArtifactId
         run: |
@@ -39,6 +41,8 @@ jobs:
       - id: cleanup
         name: Reverse release dry run
         run: ./mvnw release:clean
+        env:
+          SPRING_PROFILES_ACTIVE: "test"
 
   release:
     runs-on: ubuntu-latest
@@ -49,7 +53,7 @@ jobs:
         name: setup java
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
+          java-version: '18'
           distribution: 'zulu'
           cache: maven
       - id: git_config
@@ -78,7 +82,7 @@ jobs:
         name: setup java
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
+          java-version: '18'
           distribution: 'zulu'
           cache: maven
       - id: docker_login
@@ -90,6 +94,8 @@ jobs:
       - id: build_image
         name: Build Docker image - no tests
         run: ./mvnw clean verify -DskipTests=true jib:dockerBuild
+        env:
+          SPRING_PROFILES_ACTIVE: "test"
       - id: docker_push
         name: Push to DockerHub
         run: docker push anthonyikeda/${{needs.build.outputs.artifactId}}:${{needs.build.outputs.artifactVersion}}
