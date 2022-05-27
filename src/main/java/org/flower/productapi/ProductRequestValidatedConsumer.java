@@ -12,8 +12,9 @@ public class ProductRequestValidatedConsumer {
 
     private Logger log = LoggerFactory.getLogger(ProductRequestValidatedConsumer.class);
 
-    @RabbitListener(queues="product-requests-validated")
-    public void receiveValidatedProducts(String productValidation) {
-        log.debug("Recieved product request validation {}", productValidation);
+    @RabbitListener(queues="product-approvals")
+    public void receiveValidatedProducts(ApprovedProductMessage productValidation) {
+        log.debug("Received product request validation {}, approved? {}", productValidation.getProductId(),
+                productValidation.isApproved());
     }
 }

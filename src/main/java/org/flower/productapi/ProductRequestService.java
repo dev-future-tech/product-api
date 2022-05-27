@@ -1,7 +1,11 @@
 package org.flower.productapi;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageBuilder;
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +20,8 @@ public class ProductRequestService {
     @Resource
     ProductRequestRepository requestRepository;
 
+    @Resource
+    ObjectMapper objectMapper;
 
     @Resource
     RabbitTemplate rabbitTemplate;
@@ -32,6 +38,7 @@ public class ProductRequestService {
     }
 
     Long saveProductRequest(ProductRequest productRequest) {
+
         ProductRequestDAO newRequest = new ProductRequestDAO();
         newRequest.setProductName(productRequest.getName());
         newRequest.setProductBrand(productRequest.getBrand());
@@ -39,13 +46,21 @@ public class ProductRequestService {
         newRequest.setApproved(false);
         newRequest.setRequestedBy("user1");
 
+        log.debug("Saving product request...");
         ProductRequestDAO saved = this.requestRepository.save(newRequest);
 
         try {
             log.debug("Product request saved, pushing id {} to the queue...", saved.getRequestId());
 
-            String requestStr = String.format("Request Id: %d", saved.getRequestId());
-            this.rabbitTemplate.convertAndSend("product-exchange", "product.requests.items", requestStr);
+            ProductApprovalMessage request = new ProductApprovalMessage();
+            request.setProductId(saved.getRequestId());
+
+            String response = objectMapper.writeValueAsString(request);
+
+            Message message= MessageBuilder.withBody(response.getBytes())
+                    .setContentType(MessageProperties.CONTENT_TYPE_JSON)
+                    .build();
+            this.rabbitTemplate.convertAndSend("product-exchange", "product.requests.items", message);
         } catch(Exception e) {
             log.error("Error sending message to queue", e);
         }

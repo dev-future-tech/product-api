@@ -21,11 +21,16 @@ public class ProductRequestController {
 
     @PostMapping
     public ResponseEntity<Void> submitProductRequest(@RequestBody ProductRequest productRequest) {
+        log.debug("Received product request: {}", productRequest.getName());
         Long requestId = this.service.saveProductRequest(productRequest);
 
         return ResponseEntity.created(URI.create(String.format("/product/v1/%d", requestId))).build();
     }
 
+    @PostMapping("/approve/{requestId}")
+    public ResponseEntity<Void> approveProductRequest(Long requestId) {
+        return ResponseEntity.accepted().build();
+    }
     @GetMapping("/{requestId}")
     public ResponseEntity<ProductRequest> getProductRequest(@PathVariable("requestId") Long requestId) {
         ProductRequest productRequest = this.service.getProductRequestById(requestId);
