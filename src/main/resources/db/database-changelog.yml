@@ -121,3 +121,39 @@ databaseChangeLog:
             sql: |-
               CREATE TRIGGER add_current_date_to_my_table
               BEFORE UPDATE ON products FOR EACH ROW EXECUTE PROCEDURE change_update_time();
+  - changeSet:
+      id: 5
+      author: aikeda
+      changes:
+        - createTable:
+            tableName: product_requests
+            columns:
+              - column:
+                  name: request_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: product_name
+                  type: varchar(60)
+              - column:
+                  name: brand
+                  type: varchar(40)
+              - column:
+                  name: size
+                  type: varchar(15)
+              - column:
+                  name: approved
+                  type: boolean
+                  defaultValueBoolean: false
+              - column:
+                  name: requested_by
+                  type: varchar(80)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: requested_on
+                  type: datetime
+                  defaultValueDate: ${now}

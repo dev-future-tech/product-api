@@ -22,6 +22,9 @@ jobs:
       - id: build
         name: Execute build
         run: ./mvnw clean verify
+        env:
+          SPRING_PROFILES_ACTIVE: "test"
+
       - id: release-version
         name: Get release version
         run: ./mvnw release:prepare -DdryRun=true
@@ -61,6 +64,7 @@ jobs:
         env:
           CI_DEPLOY_USERNAME: ${{ secrets.CI_DEPLOY_USERNAME }}
           CI_DEPLOY_PASSWORD: ${{ secrets.CI_DEPLOY_PASSWORD }}
+          SPRING_PROFILES_ACTIVE: "test"
 
 # Can we download the package that was just published instead of building again?
   containerize:
