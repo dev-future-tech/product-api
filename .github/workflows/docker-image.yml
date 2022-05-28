@@ -69,6 +69,11 @@ jobs:
           CI_DEPLOY_USERNAME: ${{ secrets.CI_DEPLOY_USERNAME }}
           CI_DEPLOY_PASSWORD: ${{ secrets.CI_DEPLOY_PASSWORD }}
           SPRING_PROFILES_ACTIVE: "test"
+      - id: rollback-if-failed
+        name: Rollback in case the release failed
+        if: steps.release.outcome == 'failure'
+        run: |
+          ./mvnw release:rollback -B -s .maven_settings.xml
 
 # Can we download the package that was just published instead of building again?
   containerize:
