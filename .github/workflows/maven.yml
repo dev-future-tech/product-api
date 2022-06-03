@@ -11,6 +11,7 @@ on:
 
 env:
   SPRING_PROFILES_ACTIVE: "test"
+  PRODUCT_POD_NAME: localhost
 
 jobs:
   build:
