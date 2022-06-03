@@ -64,3 +64,6 @@ will default to CloudFormation
         - `spring.datasource.password`
         - `spring.liquibase.change-log=classpath:db/database-changelog.yml`
 ** [ ] Memory Requirements: `-Xmx32m -Xss256k`
+
+
+Added Multi container pod setup and k8s files.
