@@ -14,15 +14,41 @@ spec:
     spec:
       containers:
         - name: product-sidecar
-          image: anthonyikeda/product-sidecar:0.0.1
+          image: anthonyikeda/product-sidecar:0.0.2-SNAPSHOT
           ports:
             - containerPort: 7080
-          imagePullPolicy: Always
+            - containerPort: 7081
+          imagePullPolicy: Never
+          readinessProbe:
+            httpGet:
+              port: 7081
+              path: /actuator/health/readiness
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          livenessProbe:
+            httpGet:
+              port: 7081
+              path: /actuator/health/liveness
+            initialDelaySeconds: 3
+            periodSeconds: 3
         - name: product-api
-          image: anthonyikeda/product-api:0.0.9
-          imagePullPolicy: Always
+          image: anthonyikeda/product-api:0.0.11-SNAPSHOT
+          imagePullPolicy: Never
           ports:
             - containerPort: 8090
+            - containerPort: 8091
+          readinessProbe:
+            httpGet:
+              port: 8091
+              path: /actuator/health/readiness
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          livenessProbe:
+            httpGet:
+              port: 8091
+              path: /actuator/health/liveness
+            initialDelaySeconds: 3
+            periodSeconds: 3
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: default
@@ -46,4 +72,8 @@ spec:
                 configMapKeyRef:
                   name: product-api-config
                   key: rabbitmq_host
+            - name: PRODUCT_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
 
