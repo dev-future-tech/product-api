@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: product-api-config
+  namespace: product-ns
+data:
+  database_username: product_admin
+  database_url: jdbc:postgresql://host.minikube.internal:5432/product_db_prod
+  rabbitmq_host: 'host.minikube.internal'
+
