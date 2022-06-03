@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.example</groupId>
     <artifactId>product-api</artifactId>
-    <version>0.0.10-SNAPSHOT</version>
+    <version>0.0.10</version>
     <name>Product API</name>
     <description>Demo project for Spring Boot</description>
     <properties>
@@ -28,7 +28,7 @@
     <scm>
         <connection>scm:git:${project.scm.url}</connection>
         <url>https://github.com/dev-future-tech/product-api.git</url>
-        <tag>HEAD</tag>
+        <tag>0.0.10</tag>
     </scm>
 
     <dependencies>
