@@ -9,6 +9,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -27,6 +28,11 @@ public class AMQPConfiguration {
     }
 
     @Bean
+    Queue approvalQueue() {
+        return new Queue("product-approvals");
+    }
+
+    @Bean
     TopicExchange exchange() {
         return new TopicExchange(topicExchangeName);
     }
@@ -37,6 +43,12 @@ public class AMQPConfiguration {
                 .bind(queue)
                 .to(exchange)
                 .with("product.requests.#");
+    }
+    @Bean
+    Binding approvalBinding(@Qualifier("approvalQueue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue)
+                .to(exchange)
+                .with("product.approvals.#");
     }
 
     @Bean
@@ -51,20 +63,4 @@ public class AMQPConfiguration {
         return new Jackson2JsonMessageConverter();
     }
 
-/*
-    @Bean
-    SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
-                                             MessageListenerAdapter listenerAdapter) {
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(queueName);
-        container.setMessageListener(listenerAdapter);
-        return container;
-    }
-
-    @Bean
-    MessageListenerAdapter listenerAdapter(RequestReceiver receiver) {
-        return new MessageListenerAdapter(receiver, "receiveMessage");
-    }
-*/
 }
