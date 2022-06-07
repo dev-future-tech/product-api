@@ -8,10 +8,6 @@ Added TestContainers for testing
 
 
 == To do
-Add liquibase to test harness ✅
-Add liquibase deployment step
-Make Liquibase deployment targetable
-Create unit tests against TC database ✅
 Setup AWS deployment strategy (terraform? cloud formation?)
 Test minimal viable configuration for the service
 
@@ -68,3 +64,99 @@ will default to CloudFormation
 
 Added Multi container pod setup and k8s files.
 Testing remote build
+
+
+== Minikube Ingress setup
+
+Create a new kubedns resolver file at `/etc/resolver/minikube-product`:
+
+[source,shell,line]
+----
+domain store
+nameserver 192.168.64.4 # minikube ip
+search_order 1
+timeout 5
+----
+
+Update the kube-dns ConfigMap:
+
+[source,shell]
+----
+$ kubectl edit configmap coredns -n kube-system
+----
+[source,yaml,line]
+----
+# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+apiVersion: v1
+data:
+   Corefile: |
+      .:53 {
+          errors
+          health {
+              lameduck 5s
+          }
+          ready
+          kubernetes cluster.local in-addr.arpa ip6.arpa {
+              pods insecure
+              fallthrough in-addr.arpa ip6.arpa
+              ttl 30
+          }
+          prometheus :9153
+          hosts {
+              192.168.64.1 host.minikube.internal
+              fallthrough
+          }
+          forward . /etc/resolv.conf {
+              max_concurrent 1000
+          }
+          cache 30
+          loop
+          reload
+          loadbalance
+      }
+      # Start New Entry
+      store:53 {
+          errors
+          cache 30
+          forward . 192.168.64.4  # minikube ip
+      }
+      # End New Entry
+kind: ConfigMap
+metadata:
+    creationTimestamp: "2022-05-24T21:18:56Z"
+    name: coredns
+    namespace: kube-system
+    resourceVersion: "899415"
+    uid: 33179e56-b59b-4830-bc56-93c8970c62da
+----
+
+Then deploy the ingress:
+
+[source,yaml,line]
+----
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: product-api-ingress
+  namespace: product-ns
+
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: product.store
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: product-api-svc
+                port:
+                  number: 8090
+----
+
+You can then access the API directly through: `http://product.store/`
+

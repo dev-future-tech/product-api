@@ -1,62 +1,20 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  annotations:
-    meta.helm.sh/release-name: ingress-02493c7e08155b77d076929842434c1f13112ef0
-    meta.helm.sh/release-namespace: d889eed8-5856-464c-a897-e2526c70f22f
-  labels:
-    app.kubernetes.io/managed-by: Helm
-  managedFields:
-    - apiVersion: networking.k8s.io/v1
-      fieldsType: FieldsV1
-      fieldsV1:
-        f:metadata:
-          f:annotations:
-            .: {}
-            f:meta.helm.sh/release-name: {}
-            f:meta.helm.sh/release-namespace: {}
-          f:labels:
-            .: {}
-            f:app.kubernetes.io/managed-by: {}
-            f:humanitec-guresid: {}
-        f:spec:
-          f:ingressClassName: {}
-          f:rules: {}
-          f:tls: {}
-      manager: deploy
-      operation: Update
-      time: "2022-06-01T18:50:09Z"
-    - apiVersion: networking.k8s.io/v1
-      fieldsType: FieldsV1
-      fieldsV1:
-        f:status:
-          f:loadBalancer:
-            f:ingress: {}
-      manager: nginx-ingress-controller
-      operation: Update
-      subresource: status
-      time: "2022-06-01T18:50:26Z"
-  name: c7cd1449a4892646d80e481ea108cc311e09a869-ingress
-  namespace: d889eed8-5856-464c-a897-e2526c70f22f
+  name: product-api-ingress
+  namespace: product-ns
 
 spec:
   ingressClassName: nginx
   rules:
-    - host: product.lightning-engineering.com
+    - host: product.store
       http:
         paths:
-          - backend:
+          - path: /
+            pathType: Prefix
+            backend:
               service:
-                name: sampleapi
+                name: product-api-svc
                 port:
                   number: 8090
-            path: /
-            pathType: Prefix
-  tls:
-    - hosts:
-        - product.lightning-engineering.com
-      secretName: 007de5d48601f9cbed090f100d8b6a688815f28d-tls
-status:
-  loadBalancer:
-    ingress:
-      - ip: 35.239.25.191
+
