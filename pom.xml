@@ -240,9 +240,10 @@
                         <image>anthonyikeda/product-api:${project.version}</image>
                     </to>
                     <from>
-                        <image>eclipse-temurin:18-jre</image>
+                        <image>eclipse-temurin:19-jre</image>
                     </from>
                     <container>
+                        <mainClass>org.flower.productapi.ProductAPIApplication</mainClass>
                         <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
                     </container>
                 </configuration>
