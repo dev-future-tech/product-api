@@ -160,3 +160,4 @@ spec:
 
 You can then access the API directly through: `http://product.store/`
 
+Created by Anthony Ikeda
