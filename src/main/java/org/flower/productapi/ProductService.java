@@ -2,7 +2,7 @@ package org.flower.productapi;
 
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -32,8 +32,7 @@ public class ProductService {
 
     public List<Product> getProducts(int count, int page) {
         Page<ProductDAO> results = this.productRepository.findAll(Pageable.ofSize(count).withPage(page));
-        List<Product> toReturn = results.map(this::toDTO).toList();
-        return toReturn;
+        return results.map(this::toDTO).toList();
     }
 
     private ProductDAO toDAO(Product product) {
