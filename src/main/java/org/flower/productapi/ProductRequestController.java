@@ -33,15 +33,11 @@ public class ProductRequestController {
     }
     @GetMapping("/{requestId}")
     public ResponseEntity<ProductRequest> getProductRequest(@PathVariable("requestId") Long requestId) {
-        ProductRequest productRequest = this.service.getProductRequestById(requestId);
-
-        if(productRequest != null) {
-            log.debug("Found request {}", productRequest.getRequestId());
-            return ResponseEntity.ok(productRequest);
-        } else {
-            log.debug("Did not find product request for {}", requestId);
-            return ResponseEntity.notFound().build();
-        }
+        return this.service.getProductRequestById(requestId)
+                .map(productRequest -> {
+                    log.debug("Found request {}", productRequest.getRequestId());
+                    return ResponseEntity.ok(productRequest);
+                }).orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping

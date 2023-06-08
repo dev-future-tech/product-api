@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ProductRequestService {
@@ -26,8 +27,8 @@ public class ProductRequestService {
     @Resource
     RabbitTemplate rabbitTemplate;
 
-    ProductRequest getProductRequestById(Long productRequestId) {
-        return null;
+    Optional<ProductRequest> getProductRequestById(Long productRequestId) {
+        return this.requestRepository.findById(productRequestId).map(this::convertDAO);
     }
 
     List<ProductRequest> getProductRequests() {
