@@ -12,7 +12,7 @@
     <rule ref="category/java/bestpractices.xml/DefaultLabelNotLastInSwitchStmt"/>
     <rule ref="category/java/bestpractices.xml/DoubleBraceInitialization"/>
     <rule ref="category/java/bestpractices.xml/ForLoopCanBeForeach"/>
-    <rule ref="category/java/bestpractices.xml/GuardLogStatement"/>
+    <!-- rule ref="category/java/bestpractices.xml/GuardLogStatement"/ -->
     <rule ref="category/java/bestpractices.xml/LiteralsFirstInComparisons" />
     <rule ref="category/java/bestpractices.xml/LooseCoupling"/>
     <rule ref="category/java/bestpractices.xml/MissingOverride"/>
@@ -92,7 +92,9 @@
     <rule ref="category/java/design.xml/LogicInversion"/>
     <rule ref="category/java/design.xml/NcssCount" />
     <rule ref="category/java/design.xml/NPathComplexity" />
-    
+    <rule ref="category/java/design.xml/ExcessiveImports" />
+    <rule ref="category/java/design.xml/ExcessiveParameterList" />
+    <rule ref="category/java/design.xml/ExcessivePublicCount" />
     <rule ref="category/java/design.xml/SimplifiedTernary"/>
     <rule ref="category/java/design.xml/SimplifyBooleanExpressions" />
     <rule ref="category/java/design.xml/SimplifyBooleanReturns"/>

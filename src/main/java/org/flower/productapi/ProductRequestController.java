@@ -20,8 +20,8 @@ public class ProductRequestController {
     private final Logger log = LoggerFactory.getLogger(ProductRequestController.class);
 
     ProductRequestService service;
-    public ProductRequestController(ProductRequestService _service) {
-        this.service = _service;
+    public ProductRequestController(ProductRequestService aService) {
+        this.service = aService;
     }
 
     @PostMapping
