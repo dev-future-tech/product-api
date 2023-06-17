@@ -242,7 +242,7 @@
                         <image>anthonyikeda/product-api:${project.version}</image>
                     </to>
                     <from>
-                        <image>eclipse-temurin:19-jre</image>
+                        <image>eclipse-temurin:20-jre</image>
                     </from>
                     <container>
                         <mainClass>org.flower.productapi.ProductAPIApplication</mainClass>
