@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.3</version>
+        <version>3.1.0</version>
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
@@ -13,7 +13,7 @@
     <name>Product API</name>
     <description>Demo project for Spring Boot</description>
     <properties>
-        <java.version>19</java.version>
+        <java.version>20</java.version>
         <project.scm.id>github</project.scm.id>
         <snakeyaml.version>1.33</snakeyaml.version>
         <spring.boot.version>${project.parent.version}</spring.boot.version>
@@ -78,13 +78,13 @@
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
-            <version>4.8.0</version>
+            <version>4.22.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.5.0</version>
+            <version>42.5.4</version>
         </dependency>
 
         <dependency>
@@ -146,7 +146,7 @@
             <dependency>
                 <groupId>org.testcontainers</groupId>
                 <artifactId>testcontainers-bom</artifactId>
-                <version>1.16.3</version>
+                <version>1.18.3</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -158,15 +158,16 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>3.0.0-M5</version>
+                <version>3.0.1</version>
                 <configuration>
                     <tagNameFormat>@{project.version}</tagNameFormat>
                 </configuration>
             </plugin>
+            
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.8</version>
+                <version>0.8.9</version>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
@@ -183,6 +184,7 @@
                     </execution>
                 </executions>
             </plugin>
+            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
@@ -203,7 +205,7 @@
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
-                <version>4.8.0</version>
+                <version>4.22.0</version>
                 <configuration>
                     <propertyFile>liquibase.properties</propertyFile>
                     <changeLogFile>src/main/resources/db/database-changelog.yml</changeLogFile>
@@ -222,7 +224,7 @@
                     <dependency>
                         <groupId>org.postgresql</groupId>
                         <artifactId>postgresql</artifactId>
-                        <version>42.5.0</version>
+                        <version>42.5.4</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -274,7 +276,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.8</version>
+                <version>0.8.10</version>
                 <reportSets>
                     <reportSet>
                         <reports>

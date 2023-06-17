@@ -15,6 +15,7 @@ import org.testcontainers.junit.jupiter.Container;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
@@ -53,7 +54,7 @@ public class ProductRequestControllerTest {
         result.setBrand("Modern brands");
         result.setSize("100Ml");
 
-        when(service.getProductRequestById(Mockito.anyLong())).thenReturn(result);
+        when(service.getProductRequestById(Mockito.anyLong())).thenReturn(Optional.of(result));
 
         this.mockMvc.perform(get("/product-request/v1/1209"))
                 .andDo(print())

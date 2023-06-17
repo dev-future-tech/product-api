@@ -3,7 +3,12 @@ package org.flower.productapi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.net.URI;
 import java.util.List;
@@ -15,8 +20,8 @@ public class ProductRequestController {
     private final Logger log = LoggerFactory.getLogger(ProductRequestController.class);
 
     ProductRequestService service;
-    public ProductRequestController(ProductRequestService _service) {
-        this.service = _service;
+    public ProductRequestController(ProductRequestService aService) {
+        this.service = aService;
     }
 
     @PostMapping
@@ -33,15 +38,11 @@ public class ProductRequestController {
     }
     @GetMapping("/{requestId}")
     public ResponseEntity<ProductRequest> getProductRequest(@PathVariable("requestId") Long requestId) {
-        ProductRequest productRequest = this.service.getProductRequestById(requestId);
-
-        if(productRequest != null) {
-            log.debug("Found request {}", productRequest.getRequestId());
-            return ResponseEntity.ok(productRequest);
-        } else {
-            log.debug("Did not find product request for {}", requestId);
-            return ResponseEntity.notFound().build();
-        }
+        return this.service.getProductRequestById(requestId)
+                .map(productRequest -> {
+                    log.debug("Found request {}", productRequest.getRequestId());
+                    return ResponseEntity.ok(productRequest);
+                }).orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping

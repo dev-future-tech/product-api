@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile(value = {"!test"})
+@Profile({"!test"})
 public class ProductRequestValidatedConsumer {
 
     private Logger log = LoggerFactory.getLogger(ProductRequestValidatedConsumer.class);

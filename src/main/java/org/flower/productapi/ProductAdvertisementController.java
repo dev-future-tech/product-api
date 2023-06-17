@@ -17,12 +17,12 @@ public class ProductAdvertisementController {
     String productPodName;
     private final Logger log = LoggerFactory.getLogger(ProductAdvertisementController.class);
 
-    @GetMapping
-    public ResponseEntity<String> getAds() {
+    @GetMapping(produces = {"application/json"})
+    public ResponseEntity<ProductAdvertisement[]> getAds() {
         log.debug("Getting ads from the other container...");
         RestTemplate template = new RestTemplate();
-        String ads = template.getForObject(String.format("http://%s:7080/product-util/v1", productPodName), String.class);
+        ResponseEntity<ProductAdvertisement[]> ads = template.getForEntity(String.format("http://%s:7080/product-util/v1", productPodName), ProductAdvertisement[].class);
 
-        return ResponseEntity.ok(ads);
+        return ResponseEntity.ok(ads.getBody());
     }
 }

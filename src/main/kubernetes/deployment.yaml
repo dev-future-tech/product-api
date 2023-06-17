@@ -31,8 +31,19 @@ spec:
               path: /actuator/health/liveness
             initialDelaySeconds: 3
             periodSeconds: 3
+          resources:
+            requests:
+              memory: "50Mi"
+            limits:
+              memory: "150Mi"  # Add the JVM flags to the container envvars
+          env:
+            - name: JAVA_OPTS
+              value: |
+                -Xms30m
+                -Xmx50m
+                -XX:MaxRAM=150M
         - name: product-api
-          image: anthonyikeda/product-api:0.0.11-SNAPSHOT
+          image: anthonyikeda/product-api:0.0.13-SNAPSHOT
           imagePullPolicy: Never
           ports:
             - containerPort: 8090
@@ -47,8 +58,13 @@ spec:
             httpGet:
               port: 8091
               path: /actuator/health/liveness
-            initialDelaySeconds: 3
+            initialDelaySeconds: 10
             periodSeconds: 3
+          resources:
+            requests:
+              memory: "215Mi"
+            limits:
+              memory: "1G"  # Add the JVM flags to the container envvars
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: default
@@ -76,4 +92,11 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
+            - name: LOGGING_LEVEL_ORG_FLOWER_PRODUCTAPI
+              value: debug
+            - name: JAVA_OPTS
+              value: |
+                -Xms256m
+                -Xmx512m
+                -XX:MaxRAM=1G
 

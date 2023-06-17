@@ -1,5 +1,6 @@
 package org.flower.productapi;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,8 +10,9 @@ import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ProductRequestService {
@@ -26,8 +28,8 @@ public class ProductRequestService {
     @Resource
     RabbitTemplate rabbitTemplate;
 
-    ProductRequest getProductRequestById(Long productRequestId) {
-        return null;
+    Optional<ProductRequest> getProductRequestById(Long productRequestId) {
+        return this.requestRepository.findById(productRequestId).map(this::convertDAO);
     }
 
     List<ProductRequest> getProductRequests() {
@@ -61,7 +63,7 @@ public class ProductRequestService {
                     .setContentType(MessageProperties.CONTENT_TYPE_JSON)
                     .build();
             this.rabbitTemplate.convertAndSend("product-exchange", "product.requests.items", message);
-        } catch(Exception e) {
+        } catch(JsonProcessingException e) {
             log.error("Error sending message to queue", e);
         }
         return saved.getRequestId();
