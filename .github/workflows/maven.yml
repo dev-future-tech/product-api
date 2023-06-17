@@ -39,7 +39,7 @@ jobs:
           java-version: '20'
           distribution: 'zulu'
           cache: maven
-      - id: docker build
+      - id: docker-build
         name: Build with docker
         run: ./mvnw clean verify -DskipTests=true jib:dockerBuild
         env:
