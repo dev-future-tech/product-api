@@ -28,3 +28,20 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+  test-containerize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - id: java-setup
+        name: setup java 20
+        uses: actions/setup-java@v3
+        with:
+          java-version: '20'
+          distribution: 'zulu'
+          cache: maven
+      - id: docker build
+        name: Build with docker
+        run: ./mvnw clean verify -DskipTests=true jib:dockerBuild
+        env:
+          SPRING_PROFILES_ACTIVE: test
+          PRODUCT_POD_NAME: localhost
