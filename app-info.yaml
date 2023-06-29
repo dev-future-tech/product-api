@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: product-api
+  description: The Product REST API
+spec:
+  type: openapi
+  lifecycle: production
+  owner: user:anthonyikeda
+  definition:
+    $openapi: https://github.com/dev-future-tech/product-api/blob/main/openapi.yaml

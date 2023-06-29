@@ -19,3 +19,5 @@ spec:
   lifecycle: production
   owner: user:anthonyikeda
   system: online-retail
+  providesApis:
+    - product-api
