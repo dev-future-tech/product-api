@@ -1,0 +1,145 @@
+openapi: 3.1.0
+info:
+  title: Product API
+  version: 0.0.24
+
+paths:
+  /product/v1/advertisements:
+    get:
+      summary: Returns a list of advertisements
+      description: |
+        As part of the platform, advertisements are published regularly. This endpoint returns a list
+        of the latest ads with a headline and a message.
+      responses:
+        '200':
+          description: An array of advertisements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductAdvertisement'
+  /product/v1:
+    post:
+      summary: Create new product in catalog
+      description: |
+        Creates a new product in the catalog. Does not update inventory
+      requestBody:
+        description: Basic Product data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+      responses:
+        '201':
+          description: Created
+          headers:
+            Location:
+              schema:
+                type: string
+              description: Location of newly created Product
+    get:
+      summary: Get a list of paginated products
+      parameters:
+        - in: query
+          required: false
+          name: count
+          schema:
+            type: numeric
+        - in: query
+          required: false
+          name: page
+          schema:
+            type: numeric
+      responses:
+        '200':
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+  /product/v1/{product_id}:
+    get:
+      parameters:
+        - in: path
+          name: product_id
+          required: true
+          schema:
+            type: numeric
+      responses:
+        '200':
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type:
+                  $ref: "#/components/schemas/Product"
+  /product-request/v1:
+    summary: API to request products for the catalog
+    post:
+      requestBody:
+        content:
+          schemas:
+            $ref: "#/components/schemas/ProductRequest"
+  /product-request/approve/{requestId}:
+    summary: Approve a product request
+    post:
+      parameters:
+        - in: path
+          name: requestId
+          required: true
+          schema:
+            type: numeric
+  /product-request/{requestId}:
+    summary: Get the product request by id
+    get:
+      parameters:
+        - in: path
+          name: requestId
+          schema:
+            type: nnumeric
+      responses:
+        '200':
+          description: Succesful request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductRequest"
+
+
+components:
+  schemas:
+    ProductAdvertisement:
+      type: object
+      properties:
+        message:
+          type: string
+        headline:
+          type: string
+    Product:
+      type: object
+      properties:
+        id:
+          type: numeric
+        product_name:
+          type: string
+        sku:
+          type: string
+        description:
+          type: string
+    ProductRequest:
+      type: object
+      properties:
+        requestId:
+          type: numeric
+        name:
+          type: string
+        brand:
+          type: string
+        size:
+          type: string
+
+        
