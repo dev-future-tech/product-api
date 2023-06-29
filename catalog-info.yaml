@@ -5,7 +5,7 @@ metadata:
   annotations:
     github.com/project-slug: dev-future-tech/product-api
     backstage.io/adr-location: dir:./docs/adrs
-    backstage.io/techdocs-ref: dir:./docs
+    backstage.io/techdocs-ref: dir:.
 
 spec:
   type: application
