@@ -6,6 +6,13 @@ metadata:
     github.com/project-slug: dev-future-tech/product-api
     backstage.io/adr-location: dir:./docs/adrs
     backstage.io/techdocs-ref: dir:.
+  links:
+    - url: http://localhost:8080/product-api/requirements
+      title: Business requirements
+      icon: idea
+    - url: http://localhost:8080/product-api/latest
+      title: Latest release notes
+      icon: note
 
 spec:
   type: application
