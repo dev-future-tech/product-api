@@ -4,6 +4,7 @@ metadata:
   name: product-api
   annotations:
     github.com/project-slug: dev-future-tech/product-api
+    backstage.io/adr-location: docs/adrs
 spec:
   type: other
   lifecycle: unknown
