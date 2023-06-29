@@ -11,3 +11,4 @@ spec:
   type: application
   lifecycle: production
   owner: user:anthonyikeda
+  system: online-retail
