@@ -8,6 +8,6 @@ metadata:
     backstage.io/techdocs-ref: dir:./docs
 
 spec:
-  type: other
-  lifecycle: unknown
-  owner: guests
+  type: application
+  lifecycle: production
+  owner: user:anthonyikeda
