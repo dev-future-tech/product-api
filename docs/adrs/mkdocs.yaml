@@ -1,0 +1,7 @@
+site_name: 'Product API ADRs'
+
+nav:
+  - ADR_0001: 0001_use-adrs.md
+
+plugins:
+  - techdocs-core
