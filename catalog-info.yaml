@@ -4,7 +4,7 @@ metadata:
   name: product-api
   annotations:
     github.com/project-slug: dev-future-tech/product-api
-    backstage.io/adr-location: dir:./docs/adrs
+    backstage.io/adr-location: ./docs/adrs
     backstage.io/techdocs-ref: dir:.
   links:
     - url: http://localhost:8080/product-api/requirements
