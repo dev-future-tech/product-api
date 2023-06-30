@@ -15,7 +15,7 @@ metadata:
       icon: note
 
 spec:
-  type: application
+  type: service
   lifecycle: production
   owner: user:anthonyikeda
   system: online-retail
