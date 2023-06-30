@@ -2,6 +2,7 @@ site_name: 'Product API ADRs'
 
 nav:
   - ADR_0001: 0001_use-adrs.md
+  - ADR_0002: 0002_setup-dev-environment.md
 
 plugins:
   - techdocs-core
