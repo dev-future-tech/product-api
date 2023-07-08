@@ -17,6 +17,7 @@
         <project.scm.id>github</project.scm.id>
         <snakeyaml.version>1.33</snakeyaml.version>
         <spring.boot.version>${project.parent.version}</spring.boot.version>
+        <spring-cloud.version>2022.0.3</spring-cloud.version>
     </properties>
 
     <distributionManagement>
@@ -48,6 +49,11 @@
                     <artifactId>spring-boot-starter-tomcat</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
         </dependency>
 
         <dependency>
@@ -147,6 +153,13 @@
                 <groupId>org.testcontainers</groupId>
                 <artifactId>testcontainers-bom</artifactId>
                 <version>1.18.3</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
