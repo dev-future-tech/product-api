@@ -6,6 +6,8 @@ metadata:
     github.com/project-slug: dev-future-tech/product-api
     backstage.io/adr-location: ./docs/adrs
     backstage.io/techdocs-ref: dir:.
+    jira/project-key: OPC
+    jira/token-type: Bearer
   links:
     - url: http://localhost:8080/product-api/requirements
       title: Business requirements

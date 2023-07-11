@@ -28,12 +28,23 @@ public class ProductControllerTest {
 
     @Container
     public static GenericContainer<?> rabbit = new GenericContainer<>("rabbitmq:3-management")
-            .withExposedPorts(5672, 15672);
+            .withEnv("ALLOW_ANONYMOUS_LOGIN", "yes")
+            .withEnv("ZOOKEEPER_CLIENT_PORT", "2181");
+
+    @Container
+    public static GenericContainer<?> zookeeper = new GenericContainer<>("bitnami/zookeeper:3.8.1-debian-11-r52")
+            .withExposedPorts(2181,8080)
+            .withEnv("ALLOW_ANONYMOUS_LOGIN", "yes")
+            .withEnv("ZOO_PORT_NUMBER", "2181")
+            .withEnv("ENVIRONMENT", "local")
+            .withEnv("ZOO_TICK_TIME", "5000")
+            .withReuse(false);
 
     @DynamicPropertySource
     static void registerDynamicProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.rabbitmq.port", () -> rabbit.getMappedPort(5672));
-        registry.add("spring.rabbitmq.host", () -> rabbit.getContainerIpAddress());
+        registry.add("spring.rabbitmq.host", () -> rabbit.getHost());
+        registry.add("spring.cloud.zookeeper.connect-string", () -> String.format("%s:%d", zookeeper.getHost(), zookeeper.getMappedPort(2181)));
     }
 
     @Autowired
