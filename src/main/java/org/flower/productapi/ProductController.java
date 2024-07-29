@@ -34,9 +34,7 @@ public class ProductController {
 
     @GetMapping("/{product_id}")
     public ResponseEntity<Product> getProduct(@PathVariable("product_id") long productId) throws ProductNotFoundException{
-        return this.productService.getProductById(productId).map(dao -> {
-            return ResponseEntity.ok(dao);
-        }).orElse(ResponseEntity.notFound().build());
+        return this.productService.getProductById(productId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping

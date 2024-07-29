@@ -38,7 +38,7 @@ public class ProductRequestServiceTest {
             .withEnv("ENVIRONMENT", "local")
             .withEnv("ZOO_TICK_TIME", "4000")
             .withEnv("ZOO_MAX_SESSION_TIMEOUT", "20000")
-            .withReuse(true);
+            .withReuse(false);
 
     @DynamicPropertySource
     static void registerDynamicProperties(DynamicPropertyRegistry registry) {

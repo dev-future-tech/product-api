@@ -1,8 +1,7 @@
-openapi: 3.1.0
+openapi: 3.0.3
 info:
   title: Product API
   version: 0.0.24
-
 paths:
   /product/v1/advertisements:
     get:
@@ -30,7 +29,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Product"
+              $ref: '#/components/schemas/Product'
       responses:
         '201':
           description: Created
@@ -46,12 +45,12 @@ paths:
           required: false
           name: count
           schema:
-            type: numeric
+            type: number
         - in: query
           required: false
           name: page
           schema:
-            type: numeric
+            type: number
       responses:
         '200':
           description: Successful request
@@ -60,7 +59,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Product"
+                  $ref: '#/components/schemas/Product'
   /product/v1/{product_id}:
     get:
       parameters:
@@ -68,22 +67,30 @@ paths:
           name: product_id
           required: true
           schema:
-            type: numeric
+            type: number
       responses:
         '200':
           description: Successful request
           content:
             application/json:
               schema:
-                type:
-                  $ref: "#/components/schemas/Product"
+                $ref: '#/components/schemas/Product'
   /product-request/v1:
     summary: API to request products for the catalog
     post:
       requestBody:
         content:
-          schemas:
-            $ref: "#/components/schemas/ProductRequest"
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+      responses:
+        '201':
+          description: Created
+          headers:
+            Location:
+              schema:
+                type: string
+              description: Location of newly created Product
   /product-request/approve/{requestId}:
     summary: Approve a product request
     post:
@@ -92,24 +99,32 @@ paths:
           name: requestId
           required: true
           schema:
-            type: numeric
+            type: number
+      responses:
+        '201':
+          description: Created
+          headers:
+            Location:
+              schema:
+                type: string
+              description: Location of newly created Product Request
   /product-request/{requestId}:
     summary: Get the product request by id
+    description: Get the product request by id
     get:
       parameters:
         - in: path
           name: requestId
+          required: true
           schema:
-            type: nnumeric
+            type: number
       responses:
         '200':
-          description: Succesful request
+          description: Successful request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ProductRequest"
-
-
+                $ref: '#/components/schemas/ProductRequest'
 components:
   schemas:
     ProductAdvertisement:
@@ -123,7 +138,7 @@ components:
       type: object
       properties:
         id:
-          type: numeric
+          type: number
         product_name:
           type: string
         sku:
@@ -134,12 +149,10 @@ components:
       type: object
       properties:
         requestId:
-          type: numeric
+          type: number
         name:
           type: string
         brand:
           type: string
         size:
           type: string
-
-        
