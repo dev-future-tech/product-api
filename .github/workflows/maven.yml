@@ -21,7 +21,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 20
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v5
       with:
         java-version: '20'
         distribution: 'zulu'
@@ -34,7 +34,7 @@ jobs:
       - uses: actions/checkout@v3
       - id: java-setup
         name: setup java 20
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v5
         with:
           java-version: '20'
           distribution: 'zulu'
