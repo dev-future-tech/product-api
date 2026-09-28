@@ -3,7 +3,6 @@ Anthony Ikeda <anthony.ikeda@gmail.com>
 Version 0.0.1
 
 == Updates
-
 Added TestContainers for testing
 
 
@@ -160,4 +159,4 @@ spec:
 
 You can then access the API directly through: `http://product.store/`
 
-Created by Anthony Ikeda
+Created by Anthony Ikeda <anthony.ikeda@gmail.com>
